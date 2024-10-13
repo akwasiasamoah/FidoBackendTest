@@ -1,4 +1,4 @@
-# Project Title
+# FastAPI RESTful API
 
 ## Overview
 
@@ -6,7 +6,7 @@ Provide a brief overview of the project, its purpose, and the problem it aims to
 
 ## Table of Contents
 
-- [Project Title](#project-title)
+- [FastAPI RESTful API](#fastapi-restful-api)
   - [Overview](#overview)
   - [Table of Contents](#table-of-contents)
   - [Setup and Run Instructions](#setup-and-run-instructions)
