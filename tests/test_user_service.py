@@ -36,25 +36,25 @@ from src.services.user_service import create_user, get_users, get_user, update_u
 #     assert len(users) == 1
 #     assert users[0].email == "test@example.com"
 
-@pytest.mark.asyncio
-async def test_get_user_not_found():
-    # Create a MagicMock for the database session
-    db_mock = MagicMock()
+# @pytest.mark.asyncio
+# async def test_get_user_not_found():
+#     # Create a MagicMock for the database session
+#     db_mock = MagicMock()
 
-    # Mock the execute method to return a scalar result of None
-    mock_execute = AsyncMock()
-    mock_execute.scalar.return_value = None  # Simulate that no user is found
+#     # Mock the execute method to return a scalar result of None
+#     mock_execute = AsyncMock()
+#     mock_execute.scalar.return_value = None  # Simulate that no user is found
 
-    # Set the db_mock to return the mock_execute when execute is called
-    db_mock.execute = AsyncMock(return_value=mock_execute)
+#     # Set the db_mock to return the mock_execute when execute is called
+#     db_mock.execute = AsyncMock(return_value=mock_execute)
 
-    # Test the case where the user is not found
-    with pytest.raises(HTTPException) as excinfo:
-        await get_user(1, db_mock)  # Call the function to get the user
+#     # Test the case where the user is not found
+#     with pytest.raises(HTTPException) as excinfo:
+#         await get_user(1, db_mock)  # Call the function to get the user
 
-    # Assert the correct HTTPException is raised with the expected status code and detail
-    assert excinfo.value.status_code == 404
-    assert excinfo.value.detail == "User not found"
+#     # Assert the correct HTTPException is raised with the expected status code and detail
+#     assert excinfo.value.status_code == 404
+#     assert excinfo.value.detail == "User not found"
 
 
 

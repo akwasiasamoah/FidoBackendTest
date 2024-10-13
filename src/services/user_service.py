@@ -5,6 +5,7 @@ from fastapi import HTTPException
 from src.schemas.entities import User
 from src.utils.hash import Hash
 from sqlalchemy.future import select 
+from sqlalchemy.exc import SQLAlchemyError
 
 
 async def create_user(user: CreateUserRequest, db: AsyncSession):
@@ -14,9 +15,12 @@ async def create_user(user: CreateUserRequest, db: AsyncSession):
         await db.commit()
         await db.refresh(db_user)
         return db_user
-    except Exception as e:
-        print(f"An error occurred: {e}")
+    
+    except SQLAlchemyError as e:
         await db.rollback()
+        raise HTTPException(status_code=500, detail="An error occurred while creating user.") from e
+    
+    except Exception as e:
         raise HTTPException(status_code=500, detail="An error occurred while creating the user.")
 
 
@@ -29,6 +33,10 @@ async def get_users(db: AsyncSession,skip: int = 0, limit: int = 10 ):
         users = result.scalars().all()
         print("Fetched users: ", users)  # Debugging
         return users
+    except SQLAlchemyError as e:
+        await db.rollback()
+        raise HTTPException(status_code=500, detail="An error occurred while getting users.") from e
+    
     except Exception as e:
         print(f"An error occurred while fetching users: {e}")
         raise HTTPException(status_code=500, detail="An error occurred while fetching users.")
@@ -44,6 +52,11 @@ async def get_user(user_id: int, db: AsyncSession):
         raise HTTPException(status_code=404, detail="User not found")
     
     return user
+   
+   except SQLAlchemyError as e:
+        await db.rollback()
+        raise HTTPException(status_code=500, detail="An error occurred getting a user.") from e
+   
    except Exception as e:
         print(f"An error occurred while fetching the user: {e}")
         raise HTTPException(status_code=500, detail="An error occurred while fetching the user.")
@@ -69,6 +82,10 @@ async def update_user(user_id: int, user: UpdateUserRequest, db: AsyncSession):
         await db.refresh(db_user)
 
         return db_user
+    except SQLAlchemyError as e:
+        await db.rollback()
+        raise HTTPException(status_code=500, detail="An error occurred updating a user.") from e
+    
     except Exception as e:
         print(f"An error occurred while updating the user: {e}")
         raise HTTPException(status_code=500, detail="An error occurred while updating the user.")
@@ -88,6 +105,11 @@ async def delete_user(user_id: int, db: AsyncSession):
         await db.commit()
 
         return {"detail": "User deleted"}
+    
+    except SQLAlchemyError as e:
+        await db.rollback()
+        raise HTTPException(status_code=500, detail="An error occurred deleting a user.") from e
+    
     except Exception as e:
         print(f"An error occurred while deleting the user: {e}")
         raise HTTPException(status_code=500, detail="An error occurred while deleting the user.")
