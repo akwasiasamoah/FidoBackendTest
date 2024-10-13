@@ -8,3 +8,4 @@ env/
 *.env
 utils/env.py
 *.sqlite3
+fidobackendtest-env
