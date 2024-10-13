@@ -2,7 +2,7 @@
 
 ## Overview
 
-Provide a brief overview of the project, its purpose, and the problem it aims to solve.
+A RESTful API that perfroms database operations such as create, update, delete and read.
 
 ## Table of Contents
 
